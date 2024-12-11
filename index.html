@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+</head>
+<style>
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    .container {
+        width: 1400px;
+        margin: 50px auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .card {
+        width: 260px;
+        height: 500px;
+        background: linear-gradient(gold, rgba(255, 217, 0, 0.603));
+        border-radius: 10px;
+        padding: 20px;
+    }
+    .buttons button {
+        background-color: white;
+        color: black;
+        width: 50px;
+        height: 50px;
+        margin: 10px;
+        border: 2px solid black;
+        border-radius: 5px;
+        font-size: 20px;
+        font-weight: bold;
+    }
+    .dispaly input {
+        width: 100%;
+        height: 60px;
+        font-size: 24px;
+        border: 2px black solid;
+        border-radius: 5px;
+    }
+</style>
+<body>
+    <div class="container">
+        <div class="card">
+            <div class="dispaly">
+                <input type="text" id="display" readonly>
+            </div>
+            <div class="buttons">
+                <button id="clear">C</button>
+                <button id="back">B</button>
+                <button id="divide">/</button>
+                <button id="multiply">*</button>
+                <button id="add">+</button>
+                <button id="subtract">-</button>
+                <button id="seven">7</button>
+                <button id="eight">8</button>
+                <button id="nine">9</button>
+                <button id="four">4</button>
+                <button id="five">5</button>
+                <button id="six">6</button>
+                <button id="one">1</button>
+                <button id="two">2</button>
+                <button id="three">3</button>
+                <button id="decimal">.</button>
+                <button id="zero">0</button>
+                <button id="equal">=</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const display = document.getElementById('display');
+        let currentInput = '';
+        let operator = '';
+        let previousInput = '';
+
+        function handleButtonClick(value) {
+            if (value === 'C') {
+                currentInput = '';
+                previousInput = '';
+                operator = '';
+                display.value = '';
+            } else if (value === 'B') {
+                currentInput = currentInput.slice(0, -1);
+                display.value = currentInput;
+            } else if (value === '=') {
+                if (operator && previousInput !== '') {
+                    currentInput = evaluate(previousInput, operator, currentInput);
+                    display.value = currentInput;
+                    operator = '';
+                    previousInput = '';
+                }
+            } else if (['+', '-', '*', '/'].includes(value)) {
+                if (currentInput !== '') {
+                    previousInput = currentInput;
+                    operator = value;
+                    currentInput = '';
+                }
+            } else {
+                currentInput += value;
+                display.value = currentInput;
+            }
+        }
+
+        function evaluate(num1, op, num2) {
+            num1 = parseFloat(num1);
+            num2 = parseFloat(num2);
+
+            switch (op) {
+                case '+':
+                    return num1 + num2;
+                case '-':
+                    return num1 - num2;
+                case '*':
+                    return num1 * num2;
+                case '/':
+                    if (num2 === 0) {
+                        return 'Error';
+                    }
+                    return num1 / num2;
+                default:
+                    return '';
+            }
+        }
+
+        document.getElementById('clear').addEventListener('click', () => handleButtonClick('C'));
+        document.getElementById('back').addEventListener('click', () => handleButtonClick('B'));
+        document.getElementById('divide').addEventListener('click', () => handleButtonClick('/'));
+        document.getElementById('multiply').addEventListener('click', () => handleButtonClick('*'));
+        document.getElementById('add').addEventListener('click', () => handleButtonClick('+'));
+        document.getElementById('subtract').addEventListener('click', () => handleButtonClick('-'));
+        document.getElementById('seven').addEventListener('click', () => handleButtonClick('7'));
+        document.getElementById('eight').addEventListener('click', () => handleButtonClick('8'));
+        document.getElementById('nine').addEventListener('click', () => handleButtonClick('9'));
+        document.getElementById('four').addEventListener('click', () => handleButtonClick('4'));
+        document.getElementById('five').addEventListener('click', () => handleButtonClick('5'));
+        document.getElementById('six').addEventListener('click', () => handleButtonClick('6'));
+        document.getElementById('one').addEventListener('click', () => handleButtonClick('1'));
+        document.getElementById('two').addEventListener('click', () => handleButtonClick('2'));
+        document.getElementById('three').addEventListener('click', () => handleButtonClick('3'));
+        document.getElementById('decimal').addEventListener('click', () => handleButtonClick('.'));
+        document.getElementById('zero').addEventListener('click', () => handleButtonClick('0'));
+        document.getElementById('equal').addEventListener('click', () => handleButtonClick('='));
+    </script>
+</body>
+</html>
